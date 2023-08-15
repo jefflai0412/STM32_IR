@@ -34,3 +34,4 @@ ir\main.o: ../Core/Inc/ssd1306_fonts.h
 ir\main.o: ../Core/Inc/IR_10.h
 ir\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 ir\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+ir\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h

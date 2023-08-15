@@ -27,6 +27,7 @@
 #include "IR_10.h"
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 /* USER CODE END Includes */
 
@@ -71,7 +72,12 @@ uint32_t Difference = 0;
 uint8_t count = 0;
 uint8_t lead_code = 0;
 
-char result[300]; 
+uint8_t bin;
+uint8_t hex = 0x0;
+char hex_str[1];
+uint8_t digit_count = 0;
+
+char result[100]; 
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) 
 {
@@ -98,17 +104,32 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 			
 			if (lead_code)
 			{
+				char difference[1];
 				if (Difference > 1000 && Difference < 1300)
-					Difference = 0;
+					bin = 0;
 				else if (Difference > 2100 && Difference < 2400)
-					Difference = 1;
+					bin = 1;
+				else
+					sprintf(difference, "%c", 'X');  // TODO
+			
+				
 				count ++;
-				char difference[5];
-				sprintf(difference, "%d", Difference);
-				strcat(result, difference); 
-				strcat(result, "/");
-				if (count % 8 == 0)
-					strcat(result, "\n");
+				
+				
+				if (count % 4 == 0)
+				{
+					sprintf(hex_str, "%X", hex);  // decimal to hex
+					strcat(result, hex_str); 
+					hex = 0;
+					hex_str[0] = '\0';
+				}
+				else
+				{
+					hex += bin * pow(2, count % 4);  // binary to decimal
+				}
+				
+				
+				
 				if (count == 32)
 				{
 					OLED_Clear();
@@ -117,6 +138,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 					count = 0;
 					lead_code = 0;
 					result[0] = '\0';
+										
 				}
 			}
 		}
