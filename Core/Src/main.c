@@ -67,8 +67,9 @@ static void MX_TIM2_Init(void);
 uint8_t Is_First_Captured = 0;
 uint32_t IC_Val1 = 0;
 uint32_t IC_Val2 = 0;
-uint16_t Difference = 0;
+uint32_t Difference = 0;
 uint8_t count = 0;
+uint8_t lead_code = 0;
 
 char result[300]; 
 
@@ -92,21 +93,32 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 				Difference = (0xffff - IC_Val1) + IC_Val2;
 			IC_Val1 = IC_Val2;
 			
-			char difference[5];
-			sprintf(difference, "%03d", Difference / 10);
-			strcat(result, difference); 
-			strcat(result, "/");
+			if (Difference > 1100 && Difference < 1200)
+				lead_code = 1;
 			
-			count ++;
-		}
-		
-		if (count == 33)
-		{
-			col = oled_str(result, 0, 0, ssd1306xled_font6x8);
-			oled_RefreshGram();
-			
-			count = 0;
-			result[0] = '\0';
+			if (lead_code)
+			{
+				if (Difference > 1000 && Difference < 1300)
+					Difference = 0;
+				else if (Difference > 2100 && Difference < 2400)
+					Difference = 1;
+				count ++;
+				char difference[5];
+				sprintf(difference, "%d", Difference);
+				strcat(result, difference); 
+				strcat(result, "/");
+				if (count % 8 == 0)
+					strcat(result, "\n");
+				if (count == 32)
+				{
+					OLED_Clear();
+					col = oled_str(result, 0, 0, ssd1306xled_font6x8);
+					oled_RefreshGram();
+					count = 0;
+					lead_code = 0;
+					result[0] = '\0';
+				}
+			}
 		}
 	}
 }
@@ -151,6 +163,8 @@ int main(void)
 	oled_init();
 	HAL_TIM_IC_Start_IT(&htim2, TIM_CHANNEL_1);
 	HAL_TIM_Base_Start_IT(&htim6);
+	
+	result[0] = '\0';
 	
   /* USER CODE END 2 */
 
