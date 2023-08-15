@@ -1,0 +1,28 @@
+--cpu Cortex-M0+
+"ir\startup_stm32l052xx.o"
+"ir\oled.o"
+"ir\ssd1306_fonts.o"
+"ir\main.o"
+"ir\stm32l0xx_it.o"
+"ir\stm32l0xx_hal_msp.o"
+"ir\stm32l0xx_hal_tim.o"
+"ir\stm32l0xx_hal_tim_ex.o"
+"ir\stm32l0xx_hal.o"
+"ir\stm32l0xx_hal_i2c.o"
+"ir\stm32l0xx_hal_i2c_ex.o"
+"ir\stm32l0xx_hal_rcc.o"
+"ir\stm32l0xx_hal_rcc_ex.o"
+"ir\stm32l0xx_hal_flash_ramfunc.o"
+"ir\stm32l0xx_hal_flash.o"
+"ir\stm32l0xx_hal_flash_ex.o"
+"ir\stm32l0xx_hal_gpio.o"
+"ir\stm32l0xx_hal_dma.o"
+"ir\stm32l0xx_hal_pwr.o"
+"ir\stm32l0xx_hal_pwr_ex.o"
+"ir\stm32l0xx_hal_cortex.o"
+"ir\system_stm32l0xx.o"
+"ir\ir_10.o"
+--library_type=microlib --strict --scatter "IR\IR.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "IR.map" -o IR\IR.axf
