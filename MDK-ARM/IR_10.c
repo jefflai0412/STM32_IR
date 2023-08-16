@@ -7,24 +7,26 @@
 #define LOW_MAX		1300
 #define LOW_MIN		1000
 
+uint32_t Difference = 0;
+uint8_t bin = 0;
+uint32_t IC_Val1 = 0;
+uint32_t IC_Val2 = 0;
 
-uint32_t count_pulse_width(uint32_t VAL1, uint32_t VAL2)
+void count_pulse_width(void)
 {
-	uint32_t Difference;
-	if (VAL2 > VAL1)
-		Difference = VAL2 - VAL1;
-	else if (VAL2 < VAL1)
-		Difference = (0xffff - VAL1) + VAL2;
+	if (IC_Val2 > IC_Val1)
+		Difference = IC_Val2 - IC_Val1;
+	else if (IC_Val2 < IC_Val1)
+		Difference = (0xffff - IC_Val1) + IC_Val2;
 	
-	return Difference;
 }
 
-uint8_t Difference2Binary(uint32_t Difference)
+void Difference2Binary(void)
 {
 	if (Difference > LOW_MIN && Difference < LOW_MAX)
-		return 0;
+		bin = 0;
 	else if (Difference > HIGH_MIN && Difference < HIGH_MAX)
-		return 1;
+		bin = 1;
 }
 
 

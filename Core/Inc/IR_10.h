@@ -1,5 +1,10 @@
 #include "main.h"
 
+extern uint32_t Difference;
+extern uint8_t bin;
+extern uint32_t IC_Val1;
+extern uint32_t IC_Val2;
 
-uint32_t count_pulse_width(uint32_t VAL1, uint32_t VAL2);
-uint8_t Difference2Binary(uint32_t Difference);
+
+void count_pulse_width(void);
+void Difference2Binary(void);
