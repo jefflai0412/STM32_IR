@@ -27,20 +27,14 @@ Project File Date:  08/14/2023
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 6 (build 750)', folder: 'C:\Keil_v5\ARM\ARMCC\Bin'
 Build target 'IR'
-compiling IR_10.c...
-IR_10.c(63): warning:  #223-D: function "user_define_func" declared implicitly
-  				user_define_func();
-IR_10.c(96): warning:  #223-D: function "sprintf" declared implicitly
-  		sprintf(hex_str, "%X", deci);  // decimal to hex
-IR_10.c: 2 warnings, 0 errors
 compiling main.c...
-../Core/Src/main.c(80): warning:  #223-D: function "signal_received" declared implicitly
-  			signal_received(htim, 32);
+../Core/Src/main.c(82): warning:  #223-D: function "signal_received" declared implicitly
+  			signal_received(htim, data_bit);  
 ../Core/Src/main.c: 1 warning, 0 errors
 linking...
-Program Size: Code=11152 RO-data=976 RW-data=40 ZI-data=2272  
+Program Size: Code=11160 RO-data=976 RW-data=44 ZI-data=2268  
 FromELF: creating hex file...
-"IR\IR.axf" - 0 Error(s), 3 Warning(s).
+"IR\IR.axf" - 0 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
