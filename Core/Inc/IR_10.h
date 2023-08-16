@@ -2,7 +2,7 @@
 
 
 
-
+extern uint8_t Is_First_Captured;
 extern uint8_t count;
 
 extern uint32_t Difference;

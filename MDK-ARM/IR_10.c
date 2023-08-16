@@ -3,6 +3,8 @@
 #include "main.h"
 #include <math.h>
 #include <string.h>
+#include "ssd1306_fonts.h"
+#include "OLED.h"
 
 
 #define HIGH_MAX	2400
@@ -10,6 +12,8 @@
 #define LOW_MAX		1300
 #define LOW_MIN		1000
 
+
+uint8_t Is_First_Captured = 0;
 uint8_t count = 0;
 
 uint32_t Difference = 0;
@@ -23,8 +27,42 @@ char hex_str[1];
 
 char result[100];
 
-char * signal_receive(uint8_t data_bits)
+char * signal_received(TIM_HandleTypeDef *htim, uint8_t data_bits)
 {
+	if (Is_First_Captured==0)
+	{
+		IC_Val1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+		Is_First_Captured = 1;
+	}
+	else
+	{
+		IC_Val2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
+	
+		count_pulse_width();
+		
+		
+		if (Difference > 1100 && Difference < 1200)
+			lead_code_received = 1;
+		
+		if (lead_code_received)
+		{
+			Difference2hex();  // pulse width -> binary -> decimal -> hex
+		
+			if (count == 32)
+			{
+				OLED_Clear();
+				oled_str(result, 0, 0, ssd1306xled_font6x8);
+				oled_RefreshGram();
+				count = 0;
+				lead_code_received = 0;
+				result[0] = '\0';
+				Is_First_Captured = 0;		
+			}
+			
+			count ++;
+		}
+	}	
+	
 	return result;
 }
 
