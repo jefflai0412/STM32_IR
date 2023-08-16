@@ -104,17 +104,17 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 			
 			if (lead_code)
 			{
-				char difference[1];
 				if (Difference > 1000 && Difference < 1300)
 					bin = 0;
 				else if (Difference > 2100 && Difference < 2400)
 					bin = 1;
 				else
+				{
+					char difference[1];
 					sprintf(difference, "%c", 'X');  // TODO
+				}
 			
-				
-				count ++;
-				
+				hex += bin * pow(2, count % 4);  // binary to decimal
 				
 				if (count % 4 == 0)
 				{
@@ -123,11 +123,6 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 					hex = 0;
 					hex_str[0] = '\0';
 				}
-				else
-				{
-					hex += bin * pow(2, count % 4);  // binary to decimal
-				}
-				
 				
 				
 				if (count == 32)
@@ -140,6 +135,9 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 					result[0] = '\0';
 										
 				}
+				
+				
+				count ++;
 			}
 		}
 	}

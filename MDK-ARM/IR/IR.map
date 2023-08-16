@@ -40,13 +40,13 @@ Section Cross References
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to dmul.o(.text) for __aeabi_dmul
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to dadd.o(.text) for __aeabi_dadd
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to dfixui.o(.text) for __aeabi_d2uiz
+    main.o(i.HAL_TIM_IC_CaptureCallback) refers to strcat.o(.text) for strcat
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to oled.o(i.OLED_Clear) for OLED_Clear
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to oled.o(i.oled_str) for oled_str
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to oled.o(i.oled_RefreshGram) for oled_RefreshGram
-    main.o(i.HAL_TIM_IC_CaptureCallback) refers to strcat.o(.text) for strcat
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to main.o(.data) for .data
-    main.o(i.HAL_TIM_IC_CaptureCallback) refers to ssd1306_fonts.o(.constdata) for ssd1306xled_font6x8
     main.o(i.HAL_TIM_IC_CaptureCallback) refers to main.o(.bss) for .bss
+    main.o(i.HAL_TIM_IC_CaptureCallback) refers to ssd1306_fonts.o(.constdata) for ssd1306xled_font6x8
     main.o(i.MX_GPIO_Init) refers to memseta.o(.text) for __aeabi_memclr4
     main.o(i.MX_GPIO_Init) refers to stm32l0xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
     main.o(i.MX_GPIO_Init) refers to stm32l0xx_hal_gpio.o(i.HAL_GPIO_Init) for HAL_GPIO_Init
@@ -1918,7 +1918,7 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       754         76          0         20        220       4623   main.o
+       754         76          0         20        220       4615   main.o
        656         24          0          0       1024     315117   oled.o
          0          0        581          0          0       1478   ssd1306_fonts.o
         28          8        192          0       1024        608   startup_stm32l052xx.o
@@ -1933,7 +1933,7 @@ Image component sizes
         84         18         25          4          0       1159   system_stm32l0xx.o
 
     ----------------------------------------------------------------------
-      5564        320        836         36       2272     368611   Object Totals
+      5564        320        836         36       2272     368603   Object Totals
          0          0         32          0          0          0   (incl. Generated)
          8          0          6          0          4          0   (incl. Padding)
 
@@ -2001,8 +2001,8 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-     11116        648        980         40       2272     367607   Grand Totals
-     11116        648        980         40       2272     367607   ELF Image Totals
+     11116        648        980         40       2272     367599   Grand Totals
+     11116        648        980         40       2272     367599   ELF Image Totals
      11116        648        980         40          0          0   ROM Totals
 
 ==============================================================================
