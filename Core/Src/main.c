@@ -66,14 +66,10 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint8_t Is_First_Captured = 0;
-uint32_t IC_Val1 = 0;
-uint32_t IC_Val2 = 0;
 
-uint32_t Difference = 0;
 uint8_t count = 0;
 uint8_t lead_code = 0;
 
-uint8_t bin;
 uint8_t deci = 0;
 char hex_str[1];
 uint8_t digit_count = 0;
@@ -84,6 +80,9 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
 	{
+		signal_received();
+		
+		
 		if (Is_First_Captured==0)
 		{
 			IC_Val1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
@@ -93,7 +92,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 		{
 			IC_Val2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 	
-			Difference = count_pulse_width(IC_Val1, IC_Val2);
+			count_pulse_width();
 			IC_Val1 = IC_Val2;
 			
 			if (Difference > 1100 && Difference < 1200)
@@ -101,7 +100,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 			
 			if (lead_code)
 			{
-				bin = Difference2Binary(Difference);  // pulse width to binary
+				Difference2Binary();  // pulse width to binary
 				deci += bin * pow(2, count % 4);  // binary to decimal
 				
 				if (count % 4 == 0)
