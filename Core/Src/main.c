@@ -68,12 +68,13 @@ static void MX_TIM2_Init(void);
 uint8_t Is_First_Captured = 0;
 uint32_t IC_Val1 = 0;
 uint32_t IC_Val2 = 0;
+
 uint32_t Difference = 0;
 uint8_t count = 0;
 uint8_t lead_code = 0;
 
 uint8_t bin;
-uint8_t hex = 0x0;
+uint8_t deci = 0;
 char hex_str[1];
 uint8_t digit_count = 0;
 
@@ -83,7 +84,6 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 {
 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
 	{
-		HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_3);
 		if (Is_First_Captured==0)
 		{
 			IC_Val1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
@@ -93,10 +93,7 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 		{
 			IC_Val2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
 	
-			if (IC_Val2 > IC_Val1)
-				Difference = IC_Val2 - IC_Val1;
-			else if (IC_Val2 < IC_Val1)
-				Difference = (0xffff - IC_Val1) + IC_Val2;
+			Difference = count_pulse_width(IC_Val1, IC_Val2);
 			IC_Val1 = IC_Val2;
 			
 			if (Difference > 1100 && Difference < 1200)
@@ -104,23 +101,14 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 			
 			if (lead_code)
 			{
-				if (Difference > 1000 && Difference < 1300)
-					bin = 0;
-				else if (Difference > 2100 && Difference < 2400)
-					bin = 1;
-				else
-				{
-					char difference[1];
-					sprintf(difference, "%c", 'X');  // TODO
-				}
-			
-				hex += bin * pow(2, count % 4);  // binary to decimal
+				bin = Difference2Binary(Difference);  // pulse width to binary
+				deci += bin * pow(2, count % 4);  // binary to decimal
 				
 				if (count % 4 == 0)
 				{
-					sprintf(hex_str, "%X", hex);  // decimal to hex
+					sprintf(hex_str, "%X", deci);  // decimal to hex
 					strcat(result, hex_str); 
-					hex = 0;
+					deci = 0;
 					hex_str[0] = '\0';
 				}
 				
@@ -133,9 +121,8 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 					count = 0;
 					lead_code = 0;
 					result[0] = '\0';
-										
+					Is_First_Captured = 0;		
 				}
-				
 				
 				count ++;
 			}
