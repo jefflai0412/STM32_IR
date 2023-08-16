@@ -79,9 +79,7 @@ char result[100];
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) 
 {
 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
-	{
-		signal_received();
-		
+	{	
 		
 		if (Is_First_Captured==0)
 		{

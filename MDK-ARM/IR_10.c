@@ -13,10 +13,6 @@ uint8_t bin = 0;
 uint32_t IC_Val1 = 0;
 uint32_t IC_Val2 = 0;
 
-void signal_received(void)
-{
-	
-}
 
 
 void count_pulse_width(void)
