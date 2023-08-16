@@ -50,8 +50,7 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN PV */
-char IR_DATA[] = "";
-uint8_t col = 0;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -65,65 +64,20 @@ static void MX_TIM2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint8_t Is_First_Captured = 0;
 
-uint8_t count = 0;
-uint8_t lead_code = 0;
+void user_define_func(void)
+{
+	OLED_Clear();
+	oled_str(result, 0, 0, ssd1306xled_font6x8);
+	oled_RefreshGram();
+}
 
-uint8_t deci = 0;
-char hex_str[1];
-uint8_t digit_count = 0;
-
-char result[100]; 
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) 
 {
 	if (htim->Channel == HAL_TIM_ACTIVE_CHANNEL_1)
 	{	
-		
-		if (Is_First_Captured==0)
-		{
-			IC_Val1 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-			Is_First_Captured = 1;
-		}
-		else
-		{
-			IC_Val2 = HAL_TIM_ReadCapturedValue(htim, TIM_CHANNEL_1);
-	
-			count_pulse_width();
-			IC_Val1 = IC_Val2;
-			
-			if (Difference > 1100 && Difference < 1200)
-				lead_code = 1;
-			
-			if (lead_code)
-			{
-				Difference2Binary();  // pulse width to binary
-				deci += bin * pow(2, count % 4);  // binary to decimal
-				
-				if (count % 4 == 0)
-				{
-					sprintf(hex_str, "%X", deci);  // decimal to hex
-					strcat(result, hex_str); 
-					deci = 0;
-					hex_str[0] = '\0';
-				}
-				
-				
-				if (count == 32)
-				{
-					OLED_Clear();
-					col = oled_str(result, 0, 0, ssd1306xled_font6x8);
-					oled_RefreshGram();
-					count = 0;
-					lead_code = 0;
-					result[0] = '\0';
-					Is_First_Captured = 0;		
-				}
-				
-				count ++;
-			}
-		}
+			signal_received(htim, 32);
 	}
 }
 
