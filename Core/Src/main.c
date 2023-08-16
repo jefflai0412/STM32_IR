@@ -50,7 +50,6 @@ TIM_HandleTypeDef htim2;
 TIM_HandleTypeDef htim6;
 
 /* USER CODE BEGIN PV */
-char IR_DATA[] = "";
 uint8_t col = 0;
 /* USER CODE END PV */
 
@@ -66,15 +65,6 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint8_t Is_First_Captured = 0;
-
-
-uint8_t lead_code = 0;
-
-
-char hex_str[1];
-uint8_t digit_count = 0;
-
-char result[100]; 
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) 
 {
@@ -94,28 +84,19 @@ void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 			
 			
 			if (Difference > 1100 && Difference < 1200)
-				lead_code = 1;
+				lead_code_received = 1;
 			
-			if (lead_code)
+			if (lead_code_received)
 			{
-				Difference2Decimal();  // pulse width -> binary -> decimal
-				
-				if (count % 4 == 0)
-				{
-					sprintf(hex_str, "%X", deci);  // decimal to hex
-					strcat(result, hex_str); 
-					deci = 0;
-					hex_str[0] = '\0';
-				}
-				
-				
+				Difference2hex();  // pulse width -> binary -> decimal -> hex
+			
 				if (count == 32)
 				{
 					OLED_Clear();
 					col = oled_str(result, 0, 0, ssd1306xled_font6x8);
 					oled_RefreshGram();
 					count = 0;
-					lead_code = 0;
+					lead_code_received = 0;
 					result[0] = '\0';
 					Is_First_Captured = 0;		
 				}
