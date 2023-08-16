@@ -30,3 +30,4 @@ ir\ir_10.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_pwr.h
 ir\ir_10.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_pwr_ex.h
 ir\ir_10.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim.h
 ir\ir_10.o: ../Drivers/STM32L0xx_HAL_Driver/Inc/stm32l0xx_hal_tim_ex.h
+ir\ir_10.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
