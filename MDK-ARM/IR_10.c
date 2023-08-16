@@ -27,6 +27,14 @@ char hex_str[1];
 
 char result[100];
 
+void reset_IR_var(void)
+{
+	count = 0;
+	lead_code_received = 0;
+	result[0] = '\0';
+	Is_First_Captured = 0;	
+}
+
 char * signal_received(TIM_HandleTypeDef *htim, uint8_t data_bits)
 {
 	if (Is_First_Captured==0)
@@ -48,15 +56,11 @@ char * signal_received(TIM_HandleTypeDef *htim, uint8_t data_bits)
 		{
 			Difference2hex();  // pulse width -> binary -> decimal -> hex
 		
-			if (count == 32)
+			if (count == data_bits)
 			{
-				OLED_Clear();
-				oled_str(result, 0, 0, ssd1306xled_font6x8);
-				oled_RefreshGram();
-				count = 0;
-				lead_code_received = 0;
-				result[0] = '\0';
-				Is_First_Captured = 0;		
+				user_define_func();
+				
+				reset_IR_var();
 			}
 			
 			count ++;

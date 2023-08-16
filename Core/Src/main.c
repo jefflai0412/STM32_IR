@@ -65,6 +65,12 @@ static void MX_TIM2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void user_define_func(void)
+{
+	OLED_Clear();
+	oled_str(result, 0, 0, ssd1306xled_font6x8);
+	oled_RefreshGram();
+}
 
 
 void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim) 
